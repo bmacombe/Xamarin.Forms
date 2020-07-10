@@ -2,12 +2,19 @@ using System;
 using System.ComponentModel;
 using Android.Content;
 using Android.Graphics;
+#if __ANDROID_29__
+using AndroidX.AppCompat.Widget;
+using AndroidX.RecyclerView.Widget;
+using AViewCompat = AndroidX.Core.View.ViewCompat;
+#else
 using Android.Support.V7.Widget;
+using AViewCompat = Android.Support.V4.View.ViewCompat;
+#endif
 using Android.Views;
 using Xamarin.Forms.Internals;
 using Xamarin.Forms.Platform.Android.CollectionView;
 using Xamarin.Forms.Platform.Android.FastRenderers;
-using AViewCompat = Android.Support.V4.View.ViewCompat;
+using ARect = Android.Graphics.Rect;
 
 namespace Xamarin.Forms.Platform.Android
 {
@@ -40,7 +47,9 @@ namespace Xamarin.Forms.Platform.Android
 
 		RecyclerView.ItemDecoration _itemDecoration;
 
-		public ItemsViewRenderer(Context context) : base(new ContextThemeWrapper(context, Resource.Style.collectionViewStyle))
+		public ItemsViewRenderer(Context context) : base(
+			new ContextThemeWrapper(context, Resource.Style.collectionViewTheme), null, 
+			Resource.Attribute.collectionViewStyle)
 		{
 			_automationPropertiesProvider = new AutomationPropertiesProvider(this);
 			_effectControlProvider = new EffectControlProvider(this);
@@ -57,7 +66,7 @@ namespace Xamarin.Forms.Platform.Android
 		protected override void OnLayout(bool changed, int l, int t, int r, int b)
 		{
 			base.OnLayout(changed, l, t, r, b);
-			AViewCompat.SetClipBounds(this, new Rect(0, 0, Width, Height));
+			AViewCompat.SetClipBounds(this, new ARect(0, 0, Width, Height));
 
 			// After a direct (non-animated) scroll operation, we may need to make adjustments
 			// to align the target item; if an adjustment is pending, execute it here.
@@ -576,6 +585,7 @@ namespace Xamarin.Forms.Platform.Android
 
 		void ScrollToRequested(object sender, ScrollToRequestEventArgs args)
 		{
+			(GetSnapManager()?.GetCurrentSnapHelper() as SingleSnapHelper)?.ResetCurrentTargetPosition();
 			ScrollTo(args);
 		}
 
