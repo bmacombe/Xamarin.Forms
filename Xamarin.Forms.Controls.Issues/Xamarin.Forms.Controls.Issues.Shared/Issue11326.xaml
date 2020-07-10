@@ -1,0 +1,57 @@
+﻿<ContentPage
+  xmlns="http://xamarin.com/schemas/2014/forms"
+  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+  xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  mc:Ignorable="d"
+  x:Class="Xamarin.Forms.Controls.Issues.Issue11326"
+  Title="Scroll to bottom and click an entry, should get focus">
+  <ContentPage.Content>
+    <RefreshView>
+      <ScrollView>
+        <StackLayout>
+          <Entry Placeholder="Item 1"/>
+          <Entry Placeholder="Item 2"/>
+          <Entry Placeholder="Item 3"/>
+          <Entry Placeholder="Item 4"/>
+          <Entry Placeholder="Item 5"/>
+          <Entry Placeholder="Item 6"/>
+          <Entry Placeholder="Item 7"/>
+          <Entry Placeholder="Item 8"/>
+          <Entry Placeholder="Item 9"/>
+          <Entry Placeholder="Item 10"/>
+          <Entry Placeholder="Item 11"/>
+          <Entry Placeholder="Item 12"/>
+          <Entry Placeholder="Item 13"/>
+          <Entry Placeholder="Item 14"/>
+          <Entry Placeholder="Item 15"/>
+          <Entry Placeholder="Item 16"/>
+          <Entry Placeholder="Item 17"/>
+          <Entry Placeholder="Item 18"/>
+          <Entry Placeholder="Item 19"/>
+          <Entry Placeholder="Item 20"/>
+          <Entry Placeholder="Item 21"/>
+          <Entry Placeholder="Item 22"/>
+          <Entry Placeholder="Item 23"/>
+          <Entry Placeholder="Item 24"/>
+          <Entry Placeholder="Item 25"/>
+          <Entry Placeholder="Item 26"/>
+          <Entry Placeholder="Item 27"/>
+          <Entry Placeholder="Item 28"/>
+          <Entry Placeholder="Item 29"/>
+          <Entry Placeholder="Item 30"/>
+          <Entry Placeholder="Item 31"/>
+          <Entry Placeholder="Item 32"/>
+          <Entry Placeholder="Item 33"/>
+          <Entry Placeholder="Item 34"/>
+          <Entry Placeholder="Item 35"/>
+          <Entry Placeholder="Item 36"/>
+          <Entry Placeholder="Item 37"/>
+          <Entry Placeholder="Item 38"/>
+          <Entry Placeholder="Item 39"/>
+          <Entry Placeholder="Item 40"/>
+        </StackLayout>
+      </ScrollView>
+    </RefreshView>
+  </ContentPage.Content>
+</ContentPage>
