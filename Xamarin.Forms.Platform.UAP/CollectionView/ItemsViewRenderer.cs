@@ -98,9 +98,20 @@ namespace Xamarin.Forms.Platform.UWP
 				incc.CollectionChanged += ItemsChanged;
 			}
 
-			ListViewBase.ItemsSource = CollectionViewSource.View;
+			// Wait until the ListView or GridView has a size before attempting to set it's ItemsSource
+			// But only wait a maximum of 10 ms
+			var waitCount = 0;
+			Device.StartTimer(TimeSpan.FromMilliseconds(1), () =>
+			{
+				waitCount++;
+				if (!ListViewBaseHasSize && waitCount < 10)
+					return true;
 
-			UpdateEmptyViewVisibility();
+				ListViewBase.ItemsSource = CollectionViewSource.View;
+				UpdateEmptyViewVisibility();
+
+				return false;
+			});
 		}
 
 		protected virtual void CleanUpCollectionViewSource()
@@ -174,6 +185,8 @@ namespace Xamarin.Forms.Platform.UWP
 			HandleLayoutPropertyChanged(property);
 		}
 
+		bool ListViewBaseHasSize = false;
+
 		protected virtual void SetUpNewElement(ItemsView newElement)
 		{
 			if (newElement == null)
@@ -185,6 +198,7 @@ namespace Xamarin.Forms.Platform.UWP
 			{
 				ListViewBase = SelectListViewBase();
 				ListViewBase.IsSynchronizedWithCurrentItem = false;
+				ListViewBase.SizeChanged += ListViewBaseOnSizeChanged;
 
 				FindScrollViewer(ListViewBase);
 
@@ -201,6 +215,11 @@ namespace Xamarin.Forms.Platform.UWP
 
 			// Listen for ScrollTo requests
 			newElement.ScrollToRequested += ScrollToRequested;
+		}
+
+		void ListViewBaseOnSizeChanged(object sender, SizeChangedEventArgs e)
+		{
+			ListViewBaseHasSize = true;
 		}
 
 		protected virtual void TearDownOldElement(ItemsView oldElement)
@@ -399,12 +418,14 @@ namespace Xamarin.Forms.Platform.UWP
 
 			if (ListViewBase != null)
 			{
+				ListViewBase.SizeChanged -= ListViewBaseOnSizeChanged;
 				ListViewBase.ItemsSource = null;
 				ListViewBase = null;
 			}
 
 			ListViewBase = SelectListViewBase();
 			ListViewBase.IsSynchronizedWithCurrentItem = false;
+			ListViewBase.SizeChanged += ListViewBaseOnSizeChanged;
 
 			FindScrollViewer(ListViewBase);
 
